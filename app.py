@@ -20,7 +20,7 @@ endpoint_data = json.load(open(f"{working_dir}/model_info.json"))
 def clear_chat():
     st.session_state.messages = []
 
-st.title("Chat Bot")
+st.title("Intel® AI for Enterprise Inference - Chatbot")
 
 # Extract the keys (model names) from the JSON data
 model_names = list(endpoint_data.keys())
@@ -33,7 +33,8 @@ with st.sidebar:
 endpoint = endpoint_data[modelname]
     
 # api_key=os.environ.get('API_KEY')
-api_key = st.secrets["openai_apikey"]
+# api_key = st.secrets["openai_apikey"]
+api_key = None
 
 if not api_key:
     st.info("Please add your OpenAI API key to continue.")
