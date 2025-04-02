@@ -22,7 +22,7 @@ with st.sidebar:
     st.write(f"You selected: {modelname}")
     st.button("Start New Chat", on_click=clear_chat)
     try:
-        st.session_state.api_key = st.secrets["openai_apikey"]
+        st.session_state.api_key = st.secrets["openai_apikey2"]
     except KeyError:
     # Add a text input for the API key if not in session state
         api_key = st.text_input("Enter your API Key", type="password")
