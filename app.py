@@ -16,17 +16,18 @@ st.title("Intel® AI for Enterprise Inference \n Chatbot")
 # Extract the keys (model names) from the JSON data
 model_names = list(endpoint_data.keys())
 
-st.session_state.api_key = st.secrets["openai_apikey2"]
 
 with st.sidebar:
     modelname = st.selectbox("Select a LLM model (Running on Intel® Gaudi®) ", model_names)
     st.write(f"You selected: {modelname}")
     st.button("Start New Chat", on_click=clear_chat)
-
-    # Add a text input for the API key if 
-    api_key = st.text_input("Enter your API Key", type="password")
-    if api_key:
-        st.session_state.api_key = api_key    
+    try:
+        st.session_state.api_key = st.secrets["openai_apikey"]
+    except KeyError:
+    # Add a text input for the API key if not in session state
+        api_key = st.text_input("Enter your API Key", type="password")
+        if api_key:
+            st.session_state.api_key = api_key    
 
 # Check if the API key is provided
 if "api_key" not in st.session_state or not st.session_state.api_key:
