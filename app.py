@@ -24,9 +24,10 @@ with st.sidebar:
     api_key = st.session_state.api_key = st.secrets["openai_apikey"]
     base_url = st.session_state.base_url = os.environ.get("base_url")
     client = OpenAI(api_key=api_key, base_url=base_url)
-    model_names = client.models.list()
+    models = client.models.list()
+    model_names = [model.id for model in models]  # Extract 'id' from each model object
     
-    modelname = st.selectbox("Select LLM model (Running on Intel® Gaudi®) ", model_names)
+    modelname = st.selectbox("Select LLM model (Running on Intel® Gaudi®) on Denvr Dataworks", model_names)
     st.write(f"You selected: {modelname}")
     st.button("Start New Chat", on_click=clear_chat)
     
