@@ -5,38 +5,26 @@ import os
 from openai import OpenAI
 import json
 
-working_dir = os.path.dirname(os.path.abspath(__file__))
-endpoint_data = json.load(open(f"{working_dir}/model_info.json"))
-
 def clear_chat():
     st.session_state.messages = []
 
 st.title("Intel® AI for Enterprise Inference")
 st.header("LLM chatbot")
 
-# Extract the keys (model names) from the JSON data
-# model_names = list(endpoint_data.keys())
-
-
 with st.sidebar:
-    #Enter openai_api key under "Secrets " in HF settings
-    #Enter base_url under "Variables" in HF settings
-    api_key = st.session_state.api_key = st.secrets["openai_apikey"]
-    base_url = st.session_state.base_url = os.environ.get("base_url")
+    api_key = st.session_state.api_key = st.secrets["openai_apikey"]  #Enter openai_api key under "Secrets " in HF settings
+    base_url = st.session_state.base_url = os.environ.get("base_url") #Enter base_url under "Variables" in HF settings
     client = OpenAI(api_key=api_key, base_url=base_url)
     models = client.models.list()
     model_names = sorted([model.id for model in models])  # Extract 'id' from each model object
-    # Specify the default model name
     default_model_name = "meta-llama/Llama-3.3-70B-Instruct"  # Replace with your desired default model name
-    
     
     # Use st.session_state to persist the selected model
     if "selected_model" not in st.session_state:
-        # st.session_state.selected_model = model_names[0]  # Default to the first model
         st.session_state.selected_model = default_model_name if default_model_name in model_names else model_names[0]
 
     modelname = st.selectbox(
-        "Select LLM model (Running on Intel® Gaudi®) on Denvr Dataworks",
+        "Select an LLM model (Running on Intel® Gaudi®). Hosted on Denvr Dataworks",
         model_names,
         index=model_names.index(st.session_state.selected_model) if st.session_state.selected_model in model_names else 0,
         key="selected_model",
